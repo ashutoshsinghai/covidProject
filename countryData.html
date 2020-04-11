@@ -112,50 +112,46 @@
     $(document).ready(function() {
         $('.sidenav').sidenav();
         $('.fixed-action-btn').floatingActionButton();
-        if (!localStorage.covidMeta) {
-            fetch("https://corona.lmao.ninja/countries")
-                .then(d => d.json())
-                .then(e => {
-                    localStorage.covidMeta = JSON.stringify(e);
-                    showCountries(e);
-                })
-        } else {
-            showCountries(JSON.parse(localStorage.covidMeta))
-        }
-        $("#search-mobile").on('keyup', function() {
-            var value = $(this).val().toLowerCase();
-            $("#countries li").filter(function() {
-                $(this).toggle($(this).text()
-                    .toLowerCase().indexOf(value) > -1)
-            });
-        })
+        showCountryData();
     });
 
-    function showCountries(data) {
-        /*if(!localStorage.countries){
-fetch("https://restcountries.eu/rest/v2/all?fields=name;flag")
-.then(e=>e.json())
-.then(d=>localStorage.countries = JSON.stringify(d))
-}*/
-        let ul = document.querySelector("#countries");
-        data.forEach(e => {
-            $(".preloader-wrapper").hide();
-            let li = document.createElement("li");
-            $(li).addClass("collection-item avatar");
-            li.innerHTML = `
-            <a href="countryData.html?${e.countryInfo.iso3}&${e.country}">
-            <img src="${e.countryInfo.flag}" alt="" class="circle">
-            <span style="font-weight:bold" class="title">${e.country}</span>
-            <p>Cases: ${e.cases}<br>
-            Deaths: ${e.deaths}
-            </p>
-            <a class="secondary-content"><i class="material-icons">info_outline</i></a>
-            </a>
-            `;
-            $("li").addClass("waves-effect");
-            $("li").css({ "width": "100%", "color": "#000 !important" });
-            ul.appendChild(li);
-        })
+    function showCountryData() {
+        let country = location.search.slice(1);
+        country = country.split("&");
+        let status = true
+        fetch(`https://covidapi.info/api/v1/country/${country[0]}`)
+            .then(d => {
+                if (d.status != 200)
+                    throw new Error("Not found");
+                else
+                    return d.json()
+            })
+            .then(e => e != undefined ? showData(e) : 0)
+            .catch(r => {
+                findFurther(country[1]);
+            })
+    }
+
+    function findFurther(c) {
+        if (!localStorage[c]) {
+            let data;
+            fetch(`https://corona.lmao.ninja/countries/${c}`)
+                .then(d => d.json())
+                .then(e => {
+                    localStorage[c] = JSON.stringify(e);
+                    printData(e);
+                })
+        } else
+            printData(JSON.parse(localStorage[c]));
+    }
+
+    function printData(data) {
+        document.write(JSON.stringify(data));
+    }
+
+    function showData(data) {
+        document.write("<h1>Original</h1>");
+        document.write(JSON.stringify(data));
     }
 
     function clearText() {
