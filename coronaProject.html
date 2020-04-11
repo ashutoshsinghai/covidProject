@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Covid Analysis</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <div style="height:600px;width:100vw;float:left">
+        <canvas id="myChart"></canvas>
+    </div>
+    <div style="float: left;">
+        <h3>
+            Deaths: <span id="death"></span>
+        </h3>
+        <h3>
+            Total: <span id="total"></span>
+        </h3>
+        <h3>
+            Death Ratio: 1/<span id="tbd"></span>
+        </h3>
+        <h3>
+            Recovery Ratio: 1/<span id="rpt"></span>
+        </h3>
+    </div>
+    <script type="text/javascript">
+    var d;
+    let e = [];
+    let oldTime = new Date(Number(localStorage.time)).getHours();
+    let newTime = new Date().getHours();
+    if (localStorage.data && oldTime < newTime) {}
+    let country = location.search.slice(1);
+    fetch('https://pomber.github.io/covid19/timeseries.json')
+        .then(d => d.json())
+        .then(data => {
+            if (!localStorage.countries) {
+                localStorage.countries = JSON.stringify(Object.keys(data));
+            }
+
+            d = data[country].slice(39)
+            buildChart(d.map(e => e.date));
+            document.querySelector("#death").innerHTML = d[d.length - 1].deaths;
+            document.querySelector("#total").innerHTML = d[d.length - 1].confirmed;
+            document.querySelector("#tbd").innerHTML = parseInt(d[d.length - 1].confirmed / d[d.length - 1].deaths);
+            document.querySelector("#rpt").innerHTML = parseInt(d[d.length - 1].confirmed / d[d.length - 2].recovered);
+
+        })
+        .catch(e => {
+            console.log(e);
+        })
+
+    function buildChart(data) {
+        var ctx = document.getElementById('myChart').getContext("2d");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(e => e.split("-").slice(1).reverse().join("-")),
+                datasets: [{
+                        label: "Total Cases",
+                        data: d.map(e => e.confirmed),
+                        borderWidth: 2,
+                        backgroundColor: "#00000080",
+                        fill: false,
+                        pointRadius: 1
+                    },
+                    {
+                        label: "Deaths",
+                        data: d.map(e => e.deaths),
+                        borderWidth: 2,
+                        backgroundColor: "red",
+                        pointRadius: 0
+                    },
+                    {
+                        label: "Recoveries",
+                        data: d.map(e => e.recovered),
+                        borderWidth: 2,
+                        backgroundColor: "green",
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: country
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            maxTicksLimit: 5
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 5
+                        }
+                    }]
+
+                }
+            }
+        });
+    }
+    </script>
+</body>
+
+</html>

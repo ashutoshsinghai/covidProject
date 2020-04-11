@@ -1,0 +1,183 @@
+/* No CSS */
+/*# sourceMappingURL=app.css.map */
+@import url('https://fonts.googleapis.com/css?family=Baloo+2&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+    --primary: #560027;
+    --primary-light: #bc477b;
+    --accent: #8664C3;
+    --accent-light: rgb(191, 157, 255);
+}
+
+.font1 {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+body {
+    background: #F3F3F3;
+}
+
+.img-fix {
+    width: 18vw;
+}
+
+#sidenav {
+    background: #252525;
+    color: #ffffff;
+}
+
+.header {
+    background: #252525;
+    color: #ffffff !important;
+}
+
+
+.search {
+    background: #252525;
+}
+
+.accent {
+    background: #8664C3;
+    color: #ffffff;
+}
+
+.navItem:hover {
+    background: #8664C3;
+}
+
+.icon-white {
+    color: #ffffff !important;
+}
+
+.brand-logo {
+    margin-left: 10px;
+    font-family: 'Baloo 2', cursive;
+}
+
+.deskbar {
+    display: block;
+}
+
+.font-weight-bold {
+    font-weight: bold !important;
+}
+
+.underline {
+    font-style: underline !important;
+}
+
+.waves-effect.waves-accent .waves-ripple {
+    /* The alpha value allows the text and background color
+  of the button to still show through. */
+    background-color: rgba(134, 100, 195, 0.65);
+}
+
+#mobile-search-bar {
+    margin-top: 0px;
+}
+
+#form1 {
+    margin-left: 20vw;
+}
+
+.cart-value-text {
+    position: absolute;
+    top: 20%;
+    right: 0;
+    z-index: 1;
+    padding: 5px;
+    border-radius: 50%;
+    background: red;
+    color: #fff;
+    height: auto;
+    line-height: 10px;
+
+}
+
+.no-shadows {
+    box-shadow: none !important;
+}
+
+.one-edge-shadow {
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+    box-shadow: 0 8px 6px -6px black;
+}
+
+.primary {
+    background: var(--primary) !important;
+}
+
+.primary-light {
+    background-color: var(--primary-light) !important;
+}
+
+.accent {
+    background: var(--accent) !important;
+}
+
+.accent-light {
+    background-color: var(--accent-light) !important;
+}
+
+/* 
+paddings
+ */
+.p2 {
+    padding: 10px !important;
+}
+
+.my-1 {
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+}
+
+.my-2 {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.my-3 {
+    margin-top: 7px !important;
+    margin-bottom: 7px !important;
+}
+
+.mt-1 {
+    margin-top: 3px !important;
+}
+
+.mt-2 {
+    margin-top: 5px !important;
+}
+
+.mt-3 {
+    margin-top: 7px !important;
+}
+
+
+
+.d-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+@media only screen and (max-width:600px) {
+    .d-flex {
+        flex-direction: column;
+    }
+}
+
+.btn-outline-primary {
+    background: none !important;
+    box-shadow: inset 0 0 0 2px var(--primary);
+    color: var(--primary);
+
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary) !important;
+    box-shadow: inset 0 0 0 2px var(--primary);
+    color: #fff;
+}
