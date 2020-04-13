@@ -5,15 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Compiled and minified JQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="JS/jquery.min.js"></script>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="CSS/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="JS/materialize.min.js"></script>
+    <script src="JS/chart.min.js"></script>
     <!-- Compiled Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Font Awesome CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="CSS/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="CSS/style.css" />
     <title>CovidLive</title>
     <style type="text/css">
@@ -28,9 +29,14 @@
         transform: translateY(-50%);
     }
 
-    a {
-        color: #000;
+    .secondary-content {
+        color: #000 !important;
+        padding: 0 5px;
     }
+
+    /* .card {
+        margin: 0 !important;
+    } */
     </style>
 </head>
 
@@ -43,16 +49,6 @@
                 </a>
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             </div>
-            <nav style="z-index: 2" class=" nav-wrapper header hide-on-large-only no-shadows" id="mobile-search-bar">
-                <form id="form2" class="show-on-med-and-down">
-                    <div class="input-field">
-                        <input id="search-mobile" type="search" required placeholder="Search Country" title="Search for Products" onblur="clearText()">
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                        <div id="searchResults"></div>
-                    </div>
-                </form>
-            </nav>
             <ul class="sidenav header" id="mobile-demo">
                 <li class="accent" style="padding-top: 10px;">
                     <div class="container" style="font-size:18px">
@@ -72,24 +68,70 @@
                 <li><a href="/contact" class="waves-effect waves-accent icon-white">Contact Us<i class="material-icons icon-white">email</i></a></li>
                 <li><a href="/login" class="waves-effect waves-accent icon-white">FAQs<i class="material-icons icon-white">question_answer</i></a></li>
             </ul>
-            <div class="fixed-action-btn horizontal hide-on-large-only">
-                <a class="btn-floating btn-large accent waves-effect waves-light">
-                    <i class="large material-icons">live_help</i>
-                </a>
-                <div class="cart-value-text cart-value hide">5</div>
-                <ul>
-                    <li><a href="/checkout" class="btn-floating red " title="Check Out"><i class="material-icons">call</i></a></li>
-                    <li><a href="/cart" class="btn-floating yellow darken-1" title="View Cart"><i class="material-icons">info</i></a></li>
-                </ul>
-            </div>
     </div>
     <main style="flex-grow: 1;overflow: auto;position: relative;">
         <div id="content" style="flex-grow: 1;">
-            <div class="hide-on-large-only" style="margin:18px 0;padding: 10px">
-            </div>
             <div class="container-fluid">
-                <ul class="collection" id="countries">
-                </ul>
+                <div id="meta">
+                    <div class="card horizontal" style="width: 100%;margin-top:0 !important;">
+                        <img class="c-img" height="50px" src="https://source.unsplash.com/random/100x100">
+                        <h5 class="c-name" style="padding:0 5px">India</h5>
+                    </div>
+                    <div class="container">
+                        <div class="card p2">
+                            <strong>TOTAL CASES<a class="total-cases secondary-content"></a></strong>
+                            <div class="percent" style="box-sizing: border-box">
+                                <div style="" class="active line">
+                                    <div style="width: 100%;height: 100%;background:grey"></div>
+                                </div>
+                                <div style="" class="recovered line">
+                                    <div style="width: 100%;height: 100%;background:green"></div>
+                                </div>
+                                <div style="" class="deaths line">
+                                    <div style="width: 100%;height: 100%;background:red"></div>
+                                </div>
+                            </div>
+                            <ul class="stats" style="margin:20px 0">
+                                <li class="count grey p2 lighten-2 font-weight-bold">
+                                    <h5 class="center">
+                                        <span class="active"></span>
+                                        <span style="color:#fff !important;padding:0 5px;border-radius: 5px;" class="grey">+<small class="todayNew"></small></span>
+                                    </h5>
+                                    <p class="center">Active</p>
+                                </li>
+                                <li class="count green green-text text-darken-3 p2 lighten-5">
+                                    Recovered
+                                    <a href="" class="secondary-content recovered">0</a>
+                                </li>
+                                <li class="count red p2 red-text lighten-4">Casualities
+                                    <a href="" class="secondary-content grey" style="color:#fff !important;padding:0 5px;border-radius: 5px;">
+                                        &nbsp;+<small class="todayDeaths"></small>
+                                    </a>
+                                    <a class="secondary-content deaths" style="color:red !important">0</a>
+                                </li>
+                                <li class="count yellow p2 yellow-text text-darken-3 lighten-5">Serious cases
+                                    <a class="secondary-content critical"></a>
+                                </li>
+                            </ul>
+                            <strong class="grey-text">Last updated <span class="last-updated"></span></strong>
+                        </div>
+                        <div class="card p2">
+                            <p class="font-weight-bold center">Total People Tested</p>
+                            <h5 class="font-weight-bold center tested grey-text">4585</h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="dataOfCountry">
+                    <div class="container" style="height: 300px;margin-top: 50px">
+                        <canvas style="height: 100%;max-height: 300px" id="caseChart"></canvas>
+                    </div>
+                    <div class="container green lighten-5" style="height: 300px;margin-top: 50px">
+                        <canvas style="height: 100%;max-height: 300px" id="recoveredChart"></canvas>
+                    </div>
+                    <div class="container red lighten-5" style="height: 300px;margin-top: 50px">
+                        <canvas style="height: 100%;max-height: 300px" id="deathChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
         <div style="position: absolute;top: 50%;left: 50%;transform:translate(-50%,-50%);">
@@ -109,6 +151,7 @@
         </div>
     </main>
     <script>
+    let ddd;
     $(document).ready(function() {
         $('.sidenav').sidenav();
         $('.fixed-action-btn').floatingActionButton();
@@ -118,6 +161,7 @@
     function showCountryData() {
         let country = location.search.slice(1);
         country = country.split("&");
+        printData(JSON.parse(localStorage.covidMeta).find(e => e.country.toLowerCase() == (country[1]).toLowerCase()));
         let status = true
         fetch(`https://covidapi.info/api/v1/country/${country[0]}`)
             .then(d => {
@@ -126,9 +170,9 @@
                 else
                     return d.json()
             })
-            .then(e => e != undefined ? showData(e) : 0)
+            .then(e => { return e != undefined ? showData(e) : 0 })
             .catch(r => {
-                findFurther(country[1]);
+                console.log(r);
             })
     }
 
@@ -141,21 +185,107 @@
                     localStorage[c] = JSON.stringify(e);
                     printData(e);
                 })
-        } else
+        } else {
             printData(JSON.parse(localStorage[c]));
+            if (5 > 2) {
+                alert("new Data")
+                let data;
+                fetch(`https://corona.lmao.ninja/countries/${c}`)
+                    .then(d => d.json())
+                    .then(e => {
+                        localStorage[c] = JSON.stringify(e);
+                        printData(e);
+                    })
+            }
+        }
     }
 
     function printData(data) {
-        document.write(JSON.stringify(data));
+        $(".preloader-wrapper").hide();
+        $(".c-img")[0].src = data.countryInfo.flag;
+        $(".c-name").text(data.country);
+        let subtotal = data.active + data.deaths + data.recovered
+        $(".percent .active").width((data.active * 100 / subtotal).toFixed(2) + "%");
+        $(".percent .deaths").width((data.deaths * 100 / subtotal).toFixed(2) + "%");
+        $(".percent .recovered").width((data.recovered * 100 / subtotal).toFixed(2) + "%");
+
+        $(".line").height(10);
+        $(".line").css({ float: "left", padding: "1px", textAlign: "center" })
+        $(".line div").css({ borderRadius: "5px" })
+
+        $(".stats .active").text(data.active.toLocaleString());
+        $(".stats .deaths").text(data.deaths.toLocaleString());
+        $(".stats .recovered").text(data.recovered.toLocaleString())
+        $(".total-cases").text(data.cases.toLocaleString())
+        $(".todayNew").text(data.todayCases.toLocaleString() + " new")
+        $(".todayDeaths").text(data.todayDeaths.toLocaleString() + " today")
+        $(".critical").text(data.critical.toLocaleString())
+        $(".tested").text(data.tests.toLocaleString())
+        $(".last-updated").text(new Date(data.updated).toLocaleString())
     }
 
-    function showData(data) {
-        document.write("<h1>Original</h1>");
-        document.write(JSON.stringify(data));
+    function showData(ddd) {
+        let dates = [],
+            deaths = [],
+            totalCases = [],
+            recovered = [];
+        for (i in ddd.result) {
+            deaths.push(ddd.result[i].deaths)
+            totalCases.push(ddd.result[i].confirmed)
+            recovered.push(ddd.result[i].recovered)
+            dates.push(i)
+        }
+
+        console.log(dates);
+        buildChart(dates, deaths, "#deathChart", "deaths", "red");
+        buildChart(dates, totalCases, "#caseChart", "cases", "darkgrey");
+        buildChart(dates, recovered, "#recoveredChart", "recovered", "green");
     }
 
-    function clearText() {
-        localStorage.clear();
+    function buildChart(x, y, target, type, color) {
+        window.t = y;
+        var ctx = document.querySelector(target).getContext("2d");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: x.map(e => e.split("-").slice(1).reverse().join("-")),
+                datasets: [{
+                    label: "Total " + type,
+                    data: y,
+                    borderColor: color,
+                    fill: false
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: "Timeline for total " + type
+                },
+                elements: {
+                    point: {
+                        radius: 0,
+                        hitRadius: 10,
+                        hoverRadius: 5
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            maxTicksLimit: 5
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 5
+                        }
+                    }]
+
+                }
+            }
+        })
     }
     </script>
 </body>

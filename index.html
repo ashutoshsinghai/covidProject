@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Compiled and minified JQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="JS/jquery.min.js"></script>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="CSS/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="JS/materialize.min.js"></script>
     <!-- Compiled Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Font Awesome CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="CSS/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="CSS/style.css" />
     <title>CovidLive</title>
     <style type="text/css">
@@ -27,6 +27,12 @@
         top: 50%;
         transform: translateY(-50%);
     }
+
+    .row .card {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
     </style>
 </head>
 
@@ -38,25 +44,10 @@
                     <span>CovidLive</span>
                 </a>
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-                <form id="form1" class="hide-on-med-and-down">
-                    <div class="input-field" style="max-width: 40vw">
-                        <input id="search deskbar" type="search" required placeholder="Search for Products" title="Search country" onblur="clearText()">
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                        <div id="searchResults"></div>
-                    </div>
-                </form>
+                <a href="" class="secondary-content refresh waves-effect waves-light" style="margin-right: 15px">
+                    <i class="material-icons">refresh</i>
+                </a>
             </div>
-            <nav class=" nav-wrapper header hide-on-large-only no-shadows" id="mobile-search-bar">
-                <form id="form2" class="show-on-med-and-down">
-                    <div class="input-field">
-                        <input id="search-mobile" type="search" required placeholder="Search for Products" title="Search for Products" onblur="clearText()">
-                        <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                        <div id="searchResults"></div>
-                    </div>
-                </form>
-            </nav>
             <ul class="sidenav header" id="mobile-demo">
                 <li class="accent" style="padding-top: 10px;">
                     <div class="container" style="font-size:18px">
@@ -87,135 +78,118 @@
                 </ul>
             </div>
     </div>
-    <main style="flex-grow: 1;overflow: auto;">
+    <main style="flex-grow: 1;overflow: auto;position: relative;">
         <div id="content" style="flex-grow: 1;">
-            <div class="hide-on-large-only" style="margin:18px 0;padding: 10px">
-            </div>
-            adlklkj;
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-            <h1>Hello World</h1>
-        </div>
-        <footer class="page-footer black" style="position: relative;bottom: 0">
-            <div class="container">
-                <div class="row">
-                    <div class="col l3 s12">
-                        <h5 class="white-text">Shopper Street</h5>
-                        <p class="grey-text text-lighten-3">Absolutely. Positively. Perfect.</p>
+            <div class="container-fluid">
+                <h6 class="font-weight-bold" style="padding: 10px">LATEST UPDATE</h6>
+                <div class="row d-flex" style="flex-direction: row;flex-wrap: wrap">
+                    <div class="card col s6 black white-text waves-light">
+                        <h4 class="grey-text" id="totalCases">15,452</h4>
+                        <p>Cases</p>
                     </div>
-                    <div class="col l5 s12">
-                        <table class="white-text">
-                            <tr>
-                                <td><i class="fa fa-map-marker"></i></td>
-                                <td>Delhi GT Road, Jalandhar, Punjab, India 144401</td>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-phone-square"></i></td>
-                                <td>
-                                    <a href="tel:+91- 0088008800">+91- 0088008800</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-envelope"></i></td>
-                                <td>
-                                    <a href="mailto:support@shopperstreet.co.in">
-                                        support@shopperstreet.co.in
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
+                    <div class="card col s6 grey lighten-2">
+                        <h4 class="grey-text text-darken-2" id="activeCases">15,452</h4>
+                        <p>Active</p>
                     </div>
-                    <div class="col l4 s12 row">
-                        <div class="col">
-                            <a class="btn-floating blue darken-3" href="">
-                                <i class="fa fa-facebook-f"></i>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="btn-floating blue lighten-1">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                        </div>
-                        <div class="col">
-                            <a class="btn-floating" style="background: linear-gradient(to top,yellow,purple)">
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
+                    <div class="card col s6 green lighten-4">
+                        <h4 class="green-text" id="recovered">15,452</h4>
+                        <p>Recovered</p>
+                    </div>
+                    <div class="card col s6 red lighten-4">
+                        <h4 class="red-text" id="deaths">15,452</h4>
+                        <p>Casualities</p>
+                    </div>
+                    <div class="card col s6 yellow lighten-4">
+                        <h4 class="yellow-text text-darken-3" id="critical">15,452</h4>
+                        <p>Serious cases</p>
+                    </div>
+                    <div class="card col s6 brown lighten-4">
+                        <h4 class="brown-text" id="totalCountries">15,452</h4>
+                        <p>Countries, areas or territories with cases</p>
+                    </div>
+                    <a href="coronaProject.html" class="p2">> countrywise data</a>
+                </div>
+                <h6 class="font-weight-bold" style="padding: 10px">TODAY'S DATA</h6>
+                <div class="row d-flex" style="flex-direction: row;flex-wrap: wrap">
+                    <div class="card col s6 grey lighten-3">
+                        <h4 class="grey-text text-darken-2" id="todayCases">15,452</h4>
+                        <p>New Cases</p>
+                    </div>
+                    <div class="card col s6 red lighten-4">
+                        <h4 id="todayDeaths" class="red-text">15,452</h4>
+                        <p>Total Cases</p>
                     </div>
                 </div>
-                <hr>
-            </div>
-            <div class="footer-copyright center">
                 <div class="container">
-                    © {{date('Y')}} All rights reserved <kbd>shopperstreet.com</kbd>
+                    <h6 class="font-weight-bold">Amitabh Bachchan's message on COVID-19</h6>
+                    <iframe width="100%" height="300" src="https://www.youtube.com/embed/v-852f1PXBo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="card green">mohfw Website</div>
+            </div>
+        </div>
+        <div style="position: absolute;top: 50%;left: 50%;transform:translate(-50%,-50%);">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
                 </div>
             </div>
-        </footer>
+        </div>
     </main>
     <script>
     $(document).ready(function() {
         $('.sidenav').sidenav();
         $('.fixed-action-btn').floatingActionButton();
-        if (localStorage.payment == "99") {
-            localStorage.clear();
-        }
-        updateCartValue();
-
+        FetchData()
+        $(".refresh").click(e => {
+            e.preventDefault();
+            $(".toast").hide();
+            M.toast({ html: 'Fetching latest data...' })
+            $(".preloader-wrapper").show()
+        })
+        $(".card").addClass("waves-effect")
+        $(".card h4").text(0)
+        $(document).on('swipe', w => {
+            alert()
+        })
     });
 
+    function FetchData() {
+        if (!localStorage.globalStats) {
+            fetch("https://api.thevirustracker.com/free-api?global=stats")
+                .then(e => e.json())
+                .then(r => {
+                    $(".preloader-wrapper").hide()
+                    showData(r.results[0]);
+                })
+        } else
+            showData(JSON.parse(localStorage.globalStats))
+    }
+
+    function showData(data) {
+        console.log(data)
+        $(".preloader-wrapper").hide()
+        $("#totalCases").text(data.total_cases.toLocaleString());
+        $("#deaths").text(data.total_deaths.toLocaleString());
+        $("#activeCases").text(data.total_active_cases.toLocaleString());
+        $("#recovered").text(data.total_recovered.toLocaleString());
+        $("#critical").text(data.total_serious_cases.toLocaleString());
+        $("#totalCountries").text(data.total_affected_countries.toLocaleString());
+        $("#todayCases").text("+" + data.total_new_cases_today.toLocaleString());
+        $("#todayDeaths").text("+" + data.total_new_deaths_today.toLocaleString());
+    }
+
     function clearText() {
-        document.getElementById("search").value = "";
-        document.getElementById("search-mobile").value = "";
-    }
-
-    function addItemToCart(category, item, quantity = 1) {
-        if (!localStorage.cart) {
-            localStorage.cart = "[]";
-        }
-        let data = JSON.parse(localStorage.cart);
-        let entry = data.find(e => e.category == category && e.item.id == item.id);
-        if (!entry) {
-            data.push({ category, item, quantity });
-            localStorage.cart = JSON.stringify(data);
-            $(".cart-value").text(data.length);
-            $(".cart-value").removeClass('hide');
-        }
-    }
-
-    function isAreadyAdded(category, id) {
-        if (!localStorage.cart) {
-            return false;
-        }
-        let data = JSON.parse(localStorage.cart);
-        return data.some(e => e.category == category && e.item.id == id)
-    }
-
-    function updateCartValue() {
-        if (!localStorage.cart) {
-            return;
-        }
-        let data = JSON.parse(localStorage.cart);
-        if (data.length) {
-            $(".cart-value").text(data.length);
-            $(".cart-value").removeClass('hide');
-        }
+        localStorage.clear();
     }
     </script>
 </body>
 
 </html>
-<!-- 
-Things to do:
-1. make this a template by adding yield at the appropriate places
-2. make a navigation controller using the links provided here
-3. make rest of the pages and import this layout there
-4. make a nice footer too
-5. find a way to import the scripts / dependencies globally
-
- -->

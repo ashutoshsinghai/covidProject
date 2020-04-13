@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Compiled and minified JQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="JS/jquery.min.js"></script>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="CSS/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="JS/materialize.min.js"></script>
     <!-- Compiled Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Font Awesome CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="CSS/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="CSS/style.css" />
     <title>CovidLive</title>
     <style type="text/css">
@@ -30,6 +30,19 @@
 
     a {
         color: #000;
+    }
+
+    .collection-item img {
+        object-fit: cover;
+    }
+
+    .material-placeholder img {
+        object-fit: cover;
+    }
+
+    .material-placeholder .active {
+        border-radius: 0 !important;
+        object-fit: contain;
     }
     </style>
 </head>
@@ -112,6 +125,7 @@
     $(document).ready(function() {
         $('.sidenav').sidenav();
         $('.fixed-action-btn').floatingActionButton();
+        $('.materialboxed').materialbox();
         if (!localStorage.covidMeta) {
             fetch("https://corona.lmao.ninja/countries")
                 .then(d => d.json())
@@ -142,24 +156,35 @@ fetch("https://restcountries.eu/rest/v2/all?fields=name;flag")
             $(".preloader-wrapper").hide();
             let li = document.createElement("li");
             $(li).addClass("collection-item avatar");
+            let day = ""
+            let ac = new Date(e.updated);
+            let curr = new Date()
+            if (ac.getDate() == curr.getDate())
+                day = "";
+            else if (ac.getDate() == curr.getDate() - 1)
+                day = "yesterday";
+            else
+                day = ac.toLocaleDateString();
             li.innerHTML = `
+            <img src="${e.countryInfo.flag}" alt="" class="circle materialboxed">
             <a href="countryData.html?${e.countryInfo.iso3}&${e.country}">
-            <img src="${e.countryInfo.flag}" alt="" class="circle">
             <span style="font-weight:bold" class="title">${e.country}</span>
             <p>Cases: ${e.cases}<br>
-            Deaths: ${e.deaths}
+            Deaths: ${e.deaths}<br>
             </p>
-            <a class="secondary-content"><i class="material-icons">info_outline</i></a>
+            <a class="secondary-content">
+            ${day} ${ac.toLocaleTimeString()}
+            </a>
             </a>
             `;
-            $("li").addClass("waves-effect");
-            $("li").css({ "width": "100%", "color": "#000 !important" });
             ul.appendChild(li);
         })
+        $("li").css({ "width": "100%", "color": "#000 !important" });
+        $('.materialboxed').materialbox();
     }
 
     function clearText() {
-        localStorage.clear();
+        //localStorage.clear();
     }
     </script>
 </body>
