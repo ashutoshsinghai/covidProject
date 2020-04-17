@@ -66,7 +66,7 @@
                 </li>
                 <hr>
                 <li><a href="/contact" class="waves-effect waves-accent icon-white">Contact Us<i class="material-icons icon-white">email</i></a></li>
-                <li><a href="/login" class="waves-effect waves-accent icon-white">FAQs<i class="material-icons icon-white">question_answer</i></a></li>
+                <li><a onclick="clearText()" class="waves-effect waves-accent icon-white">Clear LocalStorage<i class="material-icons icon-white">question_answer</i></a></li>
             </ul>
     </div>
     <main style="flex-grow: 1;overflow: auto;position: relative;">
@@ -122,7 +122,7 @@
                     </div>
                 </div>
                 <div id="dataOfCountry">
-                    <div class="container" style="height: 300px;margin-top: 50px">
+                    <div class="container white" style="height: 300px;margin-top: 50px">
                         <canvas style="height: 100%;max-height: 300px" id="caseChart"></canvas>
                     </div>
                     <div class="container green lighten-5" style="height: 300px;margin-top: 50px">
@@ -130,6 +130,21 @@
                     </div>
                     <div class="container red lighten-5" style="height: 300px;margin-top: 50px">
                         <canvas style="height: 100%;max-height: 300px" id="deathChart"></canvas>
+                    </div>
+                </div>
+                <div class="container" style="margin-top: 10px">
+                    <h6 class="font-weight-bold p2">SEARCH BY DATE</h6>
+                    <div class="row">
+                        <input type="text" class="datepicker col s8" placeholder="Select the Date">
+                        <button class="btn col s4 indigo" id="searchDate">search</button>
+                    </div>
+                    <div class="col s12 sbd">
+                        <div class="card p2">
+                            <p class="card-title">Results for <span id="selectedDate"></span></p>
+                            <p>Cases<span class="secondary-content" id="selectedActive">45</span></p>
+                            <p>Recovered<span class="secondary-content" id="selectedRecovered">45</span></p>
+                            <p>Deaths<span class="secondary-content" id="selectedDeaths">45</span></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -152,17 +167,32 @@
     </main>
     <script>
     let ddd;
+    let country, newDate;
     $(document).ready(function() {
         $('.sidenav').sidenav();
         $('.fixed-action-btn').floatingActionButton();
+        $('.datepicker').datepicker({
+            onSelect: e => {
+                newDate = e.getFullYear() + "-" + (e.getMonth() + 1 + "").padStart(2, 0) + "-" + (e.getDate() + "").padStart(2, 0)
+            },
+            maxDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+            minDate: new Date("1 dec 2019")
+        });
+        $("#searchDate").click(e => {
+            showDataForDate(newDate)
+        })
         showCountryData();
     });
 
     function showCountryData() {
-        let country = location.search.slice(1);
+        country = location.search.slice(1);
         country = country.split("&");
         printData(JSON.parse(localStorage.covidMeta).find(e => e.country.toLowerCase() == (country[1]).toLowerCase()));
         let status = true
+        if (localStorage["Chart" + country[1]]) {
+            showData(JSON.parse(localStorage["Chart" + country[1]]))
+            return;
+        }
         fetch(`https://covidapi.info/api/v1/country/${country[0]}`)
             .then(d => {
                 if (d.status != 200)
@@ -170,10 +200,29 @@
                 else
                     return d.json()
             })
-            .then(e => { return e != undefined ? showData(e) : 0 })
+            .then(e => {
+                localStorage["Chart" + country[1]] = JSON.stringify(e.result);
+                if (e)
+                    showData(e);
+            })
             .catch(r => {
                 console.log(r);
             })
+    }
+
+    function showDataForDate(date) {
+
+        let data = JSON.parse(localStorage["Chart" + country[1]])[date];
+        $("#selectedActive").text(data.confirmed)
+        $("#selectedRecovered").text(data.recovered)
+        $("#selectedDeaths").text(data.deaths)
+        let newD = new Date(date);
+        let d = $(".sbd").html()
+        $(".sbd").html("please wait...")
+        setTimeout(e => {
+            $(".sbd").html(d)
+            $("#selectedDate").html("<small class='secondary-content'>" + newDate.split("-").reverse().join("-") + "</small>")
+        }, 500)
     }
 
     function findFurther(c) {
@@ -224,22 +273,32 @@
         $(".last-updated").text(new Date(data.updated).toLocaleString())
     }
 
-    function showData(ddd) {
+    async function showData(ddd) {
+
         let dates = [],
             deaths = [],
             totalCases = [],
             recovered = [];
-        for (i in ddd.result) {
-            deaths.push(ddd.result[i].deaths)
-            totalCases.push(ddd.result[i].confirmed)
-            recovered.push(ddd.result[i].recovered)
-            dates.push(i)
-        }
-
-        console.log(dates);
-        buildChart(dates, deaths, "#deathChart", "deaths", "red");
-        buildChart(dates, totalCases, "#caseChart", "cases", "darkgrey");
-        buildChart(dates, recovered, "#recoveredChart", "recovered", "green");
+        new Promise((res, rej) => {
+                for (i in ddd) {
+                    deaths.push(ddd[i].deaths)
+                    totalCases.push(ddd[i].confirmed)
+                    recovered.push(ddd[i].recovered)
+                    dates.push(i)
+                }
+            })
+            .then(e => {
+                setTimeout(e => {
+                    buildChart(dates, deaths, "#deathChart", "deaths", "red");
+                }, 100);
+                setTimeout(e => {
+                    buildChart(dates, totalCases, "#caseChart", "cases", "darkgrey");
+                }, 100)
+                setTimeout(e => {
+                    buildChart(dates, recovered, "#recoveredChart", "recovered", "green");
+                }, 100)
+            })
+            .catch(e => console.log(e))
     }
 
     function buildChart(x, y, target, type, color) {
@@ -286,6 +345,12 @@
                 }
             }
         })
+        myChart.update()
+    }
+
+    function clearText() {
+        localStorage.clear();
+        location.href = "/"
     }
     </script>
 </body>
