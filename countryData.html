@@ -140,7 +140,7 @@
                     </div>
                     <div class="col s12 sbd">
                         <div class="card p2">
-                            <p class="card-title">Results for <span id="selectedDate"></span></p>
+                            <p class="card-title">Results till <span id="selectedDate"></span></p>
                             <p>Cases<span class="secondary-content" id="selectedActive">45</span></p>
                             <p>Recovered<span class="secondary-content" id="selectedRecovered">45</span></p>
                             <p>Deaths<span class="secondary-content" id="selectedDeaths">45</span></p>
@@ -170,6 +170,7 @@
     let country, newDate;
     $(document).ready(function() {
         $('.sidenav').sidenav();
+        $(".sbd").hide()
         $('.fixed-action-btn').floatingActionButton();
         $('.datepicker').datepicker({
             onSelect: e => {
@@ -179,7 +180,9 @@
             minDate: new Date("1 dec 2019")
         });
         $("#searchDate").click(e => {
+            $(".sbd").show()
             showDataForDate(newDate)
+            $('main').animate({ scrollTop: $(".container-fluid").height() }, 1200);
         })
         showCountryData();
     });
@@ -203,7 +206,7 @@
             .then(e => {
                 localStorage["Chart" + country[1]] = JSON.stringify(e.result);
                 if (e)
-                    showData(e);
+                    showData(e.result);
             })
             .catch(r => {
                 console.log(r);
@@ -274,31 +277,19 @@
     }
 
     async function showData(ddd) {
-
         let dates = [],
             deaths = [],
             totalCases = [],
             recovered = [];
-        new Promise((res, rej) => {
-                for (i in ddd) {
-                    deaths.push(ddd[i].deaths)
-                    totalCases.push(ddd[i].confirmed)
-                    recovered.push(ddd[i].recovered)
-                    dates.push(i)
-                }
-            })
-            .then(e => {
-                setTimeout(e => {
-                    buildChart(dates, deaths, "#deathChart", "deaths", "red");
-                }, 100);
-                setTimeout(e => {
-                    buildChart(dates, totalCases, "#caseChart", "cases", "darkgrey");
-                }, 100)
-                setTimeout(e => {
-                    buildChart(dates, recovered, "#recoveredChart", "recovered", "green");
-                }, 100)
-            })
-            .catch(e => console.log(e))
+        for (i in ddd) {
+            deaths.push(ddd[i].deaths)
+            totalCases.push(ddd[i].confirmed)
+            recovered.push(ddd[i].recovered)
+            dates.push(i)
+        }
+        buildChart(dates, deaths, "#deathChart", "deaths", "red");
+        buildChart(dates, recovered, "#recoveredChart", "recovered", "green");
+        buildChart(dates, totalCases, "#caseChart", "cases", "darkgrey");
     }
 
     function buildChart(x, y, target, type, color) {
@@ -350,7 +341,7 @@
 
     function clearText() {
         localStorage.clear();
-        location.href = "/"
+        history.go(-2)
     }
     </script>
 </body>

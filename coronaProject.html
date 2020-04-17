@@ -127,7 +127,7 @@
         $('.fixed-action-btn').floatingActionButton();
         $('.materialboxed').materialbox();
         if (!localStorage.covidMeta) {
-            fetch("https://corona.lmao.ninja/countries")
+            fetch("https://corona.lmao.ninja/v2/countries")
                 .then(d => d.json())
                 .then(e => {
                     localStorage.covidMeta = JSON.stringify(e);
