@@ -44,7 +44,7 @@
     <div id="navigation">
         <nav>
             <div class="nav-wrapper header">
-                <a href="/home" class="brand-logo">
+                <a href="index.html" class="brand-logo">
                     <span>CovidLive</span>
                 </a>
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -58,16 +58,25 @@
                         </div>
                     </div>
                 </li>
-                <li><a href="/home" class="waves-effect waves-accent icon-white">Home<i class="material-icons icon-white">home</i></a></li>
-                <li><a href="/categories" class="waves-effect waves-accent icon-white">Categories<i class="material-icons icon-white">format_list_bulleted</i></a></li>
-                <li><a href="/cart" class="waves-effect waves-accent icon-white">Cart<i class="material-icons icon-white">shopping_cart</i>
-                        <span class="cart-value-text cart-value hide right" style="top:50%;transform:translateY(-50%);right: 10%;border-radius: 5px">5</span>
-                    </a>
-                </li>
+                <li><a href="index.html" class="waves-effect waves-accent icon-white">Home<i class="material-icons icon-white">home</i></a></li>
+                <li><a target="_blank" href="https://www.who.int/health-topics/coronavirus#tab=tab_1" class="waves-effect waves-accent icon-white">WHOs website<i class="material-icons icon-white">business</i></a></li>
+                <li><a target="_blank" href="http://mohfw.gov.in/" class="waves-effect waves-accent icon-white">MOHFW website<i class="material-icons icon-white">location_city</i></a></li>
+                <li><a onclick="clearText()" class="waves-effect waves-accent icon-white">Get latest update<i class="material-icons icon-white">system_update_alt</i></a></li>
+                <li><a href="coronaProject.html" class="waves-effect waves-accent icon-white">Countrywise Data<i class="material-icons icon-white">map</i></a></li>
                 <hr>
-                <li><a href="/contact" class="waves-effect waves-accent icon-white">Contact Us<i class="material-icons icon-white">email</i></a></li>
-                <li><a onclick="clearText()" class="waves-effect waves-accent icon-white">Clear LocalStorage<i class="material-icons icon-white">question_answer</i></a></li>
+                <li><a target="_blank" href="https://play.google.com/store/apps/details?id=nic.goi.aarogyasetu&hl=en_IN" class="waves-effect waves-accent icon-white">Download Aarogya setu app<i class="material-icons icon-white">email</i></a></li>
             </ul>
+            <div class="fixed-action-btn horizontal hide-on-large-only">
+                <a class="btn-floating btn-large purple darken-4 white-text waves-effect waves-light">
+                    <i class="large material-icons">live_help</i>
+                </a>
+                <div class="cart-value-text cart-value hide">5</div>
+                <ul>
+                    <li><a target="_blank" href="https://www.bbc.com/hindi/science-51366908" class="btn-floating green " title="Check Out"><i class="material-icons">info</i></a></li>
+                    <li><a href="https://www.mohfw.gov.in/pdf/coronvavirushelplinenumber.pdf" class="btn-floating yellow darken-4" title="View Cart"><i class="material-icons">help</i></a></li>
+                    <li><a target="_blank" href="tel:+91104" class="btn-floating red " title="Check Out"><i class="material-icons">call</i></a></li>
+                </ul>
+            </div>
     </div>
     <main style="flex-grow: 1;overflow: auto;position: relative;">
         <div id="content" style="flex-grow: 1;">
@@ -236,6 +245,8 @@
                 .then(e => {
                     localStorage[c] = JSON.stringify(e);
                     printData(e);
+                    localStorage.clear();
+                    findFurther(c);
                 })
         } else {
             printData(JSON.parse(localStorage[c]));
@@ -257,9 +268,9 @@
         $(".c-img")[0].src = data.countryInfo.flag;
         $(".c-name").text(data.country);
         let subtotal = data.active + data.deaths + data.recovered
-        $(".percent .active").width((data.active * 100 / subtotal).toFixed(2) + "%");
-        $(".percent .deaths").width((data.deaths * 100 / subtotal).toFixed(2) + "%");
-        $(".percent .recovered").width((data.recovered * 100 / subtotal).toFixed(2) + "%");
+        $(".percent .active").width((data.active * 100 / subtotal)+ "%");
+        $(".percent .deaths").width((data.deaths * 100 / subtotal) + "%");
+        $(".percent .recovered").width((data.recovered * 100 / subtotal) + "%");
 
         $(".line").height(10);
         $(".line").css({ float: "left", padding: "1px", textAlign: "center" })
@@ -341,7 +352,8 @@
 
     function clearText() {
         localStorage.clear();
-        history.go(-2)
+        M.toast({html:"Updating Data...",completeCallback:e=>location.href="coronaProject.html"},4000);
+        
     }
     </script>
 </body>
